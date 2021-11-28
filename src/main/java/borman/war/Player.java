@@ -25,14 +25,11 @@ public class Player {
 
     public void setCardPile(List<PlayingCard> cardPile) {
         this.cardPile = cardPile;
+        setBottomCard();
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void dealCardToPlayer(PlayingCard cardToAdd) {
@@ -51,10 +48,11 @@ public class Player {
     public PlayingCard topCardInStack() {
         if (!cardPile.isEmpty()) {
             PlayingCard topCard = cardPile.remove(0);
-            if (topCard.equals(bottomCard)) {
+            if (topCard.equals(bottomCard) && cardPile.size() > 1) {
                 logger.info("{} has reached end of deck. Shuffling after getting last card.", name);
-                Collections.shuffle(cardPile);
-                setBottomCard();
+                List<PlayingCard> shuffled = getCardPile();
+                Collections.shuffle(shuffled);
+                setCardPile(shuffled);
             }
             return topCard;
         } else

@@ -78,7 +78,9 @@ public class WarSimulator implements CommandLineRunner {
             List<PlayingCard> tiedReward = new ArrayList<>();
             tiedPlayers.forEach(player ->
                     IntStream.range(0, player.getCardPile().size() > 3 ? 3 : player.getCardPile().size() - 2)
-                            .forEach(x -> tiedReward.add(player.getCardPile().remove(player.getCardPile().size() - 1)))
+                            .forEach(x -> {
+                                tiedReward.add(player.topCardInStack());
+                            })
             );
 
             logger.info("Rewarded cards in tie: {}", tiedReward.stream().map(PlayingCard::toString).collect(Collectors.joining(", ")));
