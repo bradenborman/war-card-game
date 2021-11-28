@@ -42,6 +42,9 @@ public class Deck {
                     player.dealCardToPlayer(deck.remove(0));
             }
         }
+
+        players.forEach(Player::setBottomCard);
+
         logger.info("Dealing done. Each player has {} cards dealt to them", players.get(0).getCardPile().size());
     }
 }

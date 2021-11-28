@@ -42,6 +42,9 @@ public class WarSimulator implements CommandLineRunner {
     }
 
     private void playWar(List<Player> players, List<PlayingCard> cardsToAwardWinner) {
+
+        logPlay(players);
+
         HashMap<String, PlayingCard> cardsPlayed = new HashMap<>();
 
         //everyone play a card
@@ -49,7 +52,7 @@ public class WarSimulator implements CommandLineRunner {
             cardsPlayed.put(player.getName(), player.topCardInStack());
         });
 
-        //Sort map by highest value player -- doesnt take into ties yet
+        //Sort map by highest value player -- doesn't take into ties yet
         Map<String, PlayingCard> sorted = cardsPlayed
                 .entrySet()
                 .stream()
@@ -84,6 +87,7 @@ public class WarSimulator implements CommandLineRunner {
             tiedReward.add(highestPlayedCard.getValue());
             tiedReward.add(nextHighest.getValue());
 
+            logger.info("Number of cards awarded to next winner: {}", tiedReward.size());
             playWar(tiedPlayers, tiedReward);
 
         } else {
@@ -92,17 +96,23 @@ public class WarSimulator implements CommandLineRunner {
                     .findFirst()
                     .orElseThrow(RuntimeException::new);
 
-            winningPlayer.getCardPile().addAll(cardsToAwardWinner);
-
             cardsPlayed
                     .values()
-                    .forEach(winningPlayer::dealCardToPlayer);
+                    .forEach(winningPlayer::collectWinnings);
+
+            winningPlayer.getCardPile().addAll(winningPlayer.getCardPile().size() - 1, cardsToAwardWinner);
         }
 
 
-        logger.info("After WAR: Player one deck size: {}\t  Player two Deck size: {}", players.get(0).getCardPile().size(), players.get(1).getCardPile().size());
-
     }
 
+
+    private void logPlay(List<Player> players) {
+        logger.info("Before WAR: {}'s deck size: {}\t  {}'s Deck size: {}",
+                players.get(0).getName(),
+                players.get(0).getCardPile().size(),
+                players.get(1).getName(),
+                players.get(1).getCardPile().size());
+    }
 
 }
