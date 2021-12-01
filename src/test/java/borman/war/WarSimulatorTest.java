@@ -13,7 +13,7 @@ class WarSimulatorTest {
     @DisplayName("Run a game of war")
     void runSimulation() {
         WarSimulator warSimulator = new WarSimulator();
-        warSimulator.run();
+        warSimulator.playWar();
     }
 
     @Test

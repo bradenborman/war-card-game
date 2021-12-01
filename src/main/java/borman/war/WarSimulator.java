@@ -10,12 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-public class WarSimulator implements CommandLineRunner {
+public class WarSimulator  {
 
     private static final Logger logger = LoggerFactory.getLogger(WarSimulator.class);
 
-    @Override
-    public void run(String... args) {
+    public void playWar() {
 
         List<PlayingCard> deck = Deck.newShuffledDeck();
 
@@ -31,6 +30,7 @@ public class WarSimulator implements CommandLineRunner {
         do {
             turnCount = turnCount + 1;
             playWar(players, Collections.emptyList());
+
         } while (checkWinner(players));
 
         logger.info("Game over after {} turns!", turnCount);
